@@ -5,11 +5,15 @@
  */
 package entite.service;
 
+import com.google.gson.Gson;
 import entite.Aeroport;
+import entite.Vol;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -83,6 +87,54 @@ public class AeroportFacadeREST extends AbstractFacade<Aeroport> {
         return String.valueOf(super.count());
     }
 
+    @GET
+    @Path("testProcEJB")
+    @Produces(MediaType.APPLICATION_JSON)
+     public String  getAllAeroport() {
+        String ejbql = "select v.numVol From Vol v JOIN v.aeroportDept a where a.nomVilleDesservie ='Bastia'";
+        Collection<String> lesAeroports;
+        String json="";
+        try {
+            Query query = em.createQuery(ejbql);
+            
+            lesAeroports = (Collection<String>) query.getResultList();
+          
+          json= new Gson().toJson(lesAeroports);
+        }
+        catch(Exception ex){
+        
+          
+            System.out.println("Exception JPQL" + ex.getMessage());
+        }
+        return json;
+    }
+   
+    @GET
+    @Path("listeVol/{ville}")
+    @Produces(MediaType.APPLICATION_JSON)
+     public String  getAllAeroportFull(@PathParam ("ville") String ville) {
+        String ejbql = "select v From Vol v JOIN v.aeroportDept a where a.nomVilleDesservie = :town";
+        List<Vol> lesAeroports;
+        String json="";
+        try {
+            Query query = em.createQuery(ejbql);
+            query.setParameter("town", ville);
+            lesAeroports = (List<Vol>) query.getResultList();
+          
+            Gson outils = new Gson();
+            json = outils.toJson(lesAeroports);
+           System.out.println(json);
+        }
+        catch(Exception ex){
+        
+          
+            System.out.println("Exception JPQL" + ex.getMessage());
+        }
+        return json;
+    }
+   
+     
+     
     @Override
     protected EntityManager getEntityManager() {
         return em;

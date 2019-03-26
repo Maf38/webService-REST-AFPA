@@ -50,12 +50,7 @@ public class Aeroport implements Serializable {
     @Size(max = 50)
     @Column(name = "NomVilleDesservie")
     private String nomVilleDesservie;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aeroportDept")
-    private Collection<Vol> volCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aeroportArr")
-    private Collection<Vol> volCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "baseAeroport")
-    private Collection<Avion> avionCollection;
+   
 
     public Aeroport() {
     }
@@ -93,32 +88,7 @@ public class Aeroport implements Serializable {
         this.nomVilleDesservie = nomVilleDesservie;
     }
 
-    @XmlTransient
-    public Collection<Vol> getVolCollection() {
-        return volCollection;
-    }
-
-    public void setVolCollection(Collection<Vol> volCollection) {
-        this.volCollection = volCollection;
-    }
-
-    @XmlTransient
-    public Collection<Vol> getVolCollection1() {
-        return volCollection1;
-    }
-
-    public void setVolCollection1(Collection<Vol> volCollection1) {
-        this.volCollection1 = volCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Avion> getAvionCollection() {
-        return avionCollection;
-    }
-
-    public void setAvionCollection(Collection<Avion> avionCollection) {
-        this.avionCollection = avionCollection;
-    }
+  
 
     @Override
     public int hashCode() {
